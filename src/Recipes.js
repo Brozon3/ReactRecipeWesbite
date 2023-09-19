@@ -2,12 +2,12 @@ export function RecipeList( props ){
 
     return (
         props.recipes.map((recipe, i) => {
-            return <Recipe name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} servingSize={recipe.servingSize}/>
+            return <Recipe name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} description={recipe.description}/>
         })
     )
 };
 
-function Recipe ( {name, ingredients, instructions, picture, servingSize} ){
+function Recipe ( {name, ingredients, instructions, picture, description} ){
 
     const ingredientObjects = ingredients.map(
         (ingredient, i) => ({
@@ -27,7 +27,8 @@ function Recipe ( {name, ingredients, instructions, picture, servingSize} ){
     return(
         <div>
             <img src={picture} height={200} width={250} alt=""></img>
-            <p>Recipe: {name}</p>
+            <p>{name}</p>
+            <p>{description}</p>
             <p>Ingredients:</p>
             <ul>
                 {ingredientObjects.map(ingredient => (
@@ -40,7 +41,6 @@ function Recipe ( {name, ingredients, instructions, picture, servingSize} ){
                     <li key={instruction.id}>{instruction.text}</li>
                 ))}
             </ul>
-            <p>Serving Size: {servingSize}</p>
             <br></br>
         </div>   
     )
