@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
-import { App, Add } from './App';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { App } from './App';
+import { AddRecipe } from './components/addRecipe';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'; 
 
-ReactDOM.render(
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="/add" element={<Add />} />
+      <Route path="/add" element={<AddRecipe />} />
     </Routes>
-  </BrowserRouter>,
-  document.getElementById("root")
+  </BrowserRouter>
 );

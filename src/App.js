@@ -3,44 +3,13 @@ import { useState, useEffect } from 'react';
 import { RecipeList } from './Recipes';
 import { Link } from "react-router-dom";
 
-export function Add() {
-  return(
-    <div>
-      <nav>
-        <Link to="/">Home</Link>
-        <span> </span>
-        <Link to="/add">Add Recipe</Link> 
-      </nav>
-      <h1>Add a Recipe</h1>
-      <form>
-        <label for="name">Name: </label>
-        <input type="text" id="name"></input>
-        <br></br>
-        <label for="desc">Description: </label>
-        <input type="text" id="desc"></input>
-        <br></br>
-        <label for="ingred">Ingredients: </label>
-        <input type="text" id="ingred"></input>
-        <br></br>
-        <label for="instruct">Instructions: </label>
-        <input type="text" id="instruct"></input>
-        <br></br>
-        <label for="pic">Picture: </label>
-        <input type="text" id="pic"></input>
-        <br></br>
-        <button>Add Recipe</button>
-      </form>
-    </div>
-  );
-}
-
 export function App() {
 
   let recipeData = [ 
     {
       name: "Family Pizza Night",
       ingredients: ["1 smartphone OR", "1 telephone AND a phonebook"],
-      instructions: ["Google/Yellowpages the closest Dominos and order pizza.", "Send mass text to/call the fam.", "Meet at central location.", "Distribute pizza and cheesy bread.", "Eat until absolutelyStuffed equals true."],
+      instructions: ["Google/Yellow Pages the closest Dominos and order pizza.", "Send mass text to/call the fam.", "Meet at central location.", "Distribute pizza and cheesy bread.", "Eat until absolutelyStuffed equals true."],
       picture: "./images/family_pizza_night.jfif",
       description: "This recipe is not sponsored by Dominos."
     }, 
