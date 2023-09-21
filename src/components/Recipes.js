@@ -1,13 +1,13 @@
-export function RecipeList({recipes, remove}){
+export function RecipeList({recipes, removeRecipes}){
 
     return (
         recipes.map((recipe, i) => {
-            return <Recipe key={i} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} description={recipe.description} remove={remove}/>
+            return <Recipe key={i} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} description={recipe.description} removeRecipes={removeRecipes}/>
         })
     )
 };
 
-function Recipe ( {name, ingredients, instructions, picture, description, remove} ){
+function Recipe ( {name, ingredients, instructions, picture, description, removeRecipes} ){
 
     const ingredientObjects = ingredients.map(
         (ingredient, i) => ({
@@ -25,25 +25,55 @@ function Recipe ( {name, ingredients, instructions, picture, description, remove
 
     return(
         
-        <div name={name} className="container border border-secondary rounded my-2">
-            <br></br>
-            <img src={picture} height={200} width={250} alt=""></img>
-            <h3>{name}</h3>
-            <h5>{description}</h5>
-            <p>Ingredients:</p>
-            <ul>
-                {ingredientObjects.map(ingredient => (
-                    <li key={ingredient.id}>{ingredient.title}</li>
-                ))}
-            </ul>
-            <p>Instructions:</p>
-            <ul>
-                {instructionObjects.map(instruction => (
-                    <li key={instruction.id} type="1">{instruction.text}</li>
-                ))}
-            </ul>
-            <button className="mb-3">Remove</button>
-            <br></br>
+        <div name={name} className="container border border-secondary rounded my-2 w-50" style={{justifyContent: "center"}}>
+            <div className="row">
+                <div className="col-12 d-flex justify-content-center">
+                    <img src={picture} height={200} width={250} alt=""></img>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-12 d-flex justify-content-center">
+                    <h3>{name}</h3>
+                </div>
+            </div>
+            
+            <div className="row">
+                <div className="col-12 d-flex justify-content-center">
+                    <h5>{description}</h5>
+                </div>
+            </div>
+            
+            
+            <div className="row">
+                <div className="col-12">
+                    <p>Ingredients:</p>
+                    <ul>
+                        {ingredientObjects.map(ingredient => (
+                            <li key={ingredient.id}>{ingredient.title}</li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-12">
+                    <p>Instructions:</p>
+                    <ul>
+                        {instructionObjects.map(instruction => (
+                            <li key={instruction.id} type="1">{instruction.text}</li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-12">
+                    <button className="mb-3" onClick={() => removeRecipes(name)}>Remove</button>
+                </div>
+            </div>
+            
+    
         </div>   
     )
 };

@@ -15,15 +15,20 @@ export function App() {
   }, [recipes]);
 
   const removeRecipes = (recipeName) => {
-    setRecipes(recipes.filter(recipe => recipe.name !== recipeName));
-    console.log(recipes); 
+    let remainingRecipes = [];
+    for (let i = 0; i < recipes.length; i++){
+      if (recipes[i].name !== recipeName){
+        remainingRecipes.push(recipes[i]);
+      }
+    }
+    setRecipes(remainingRecipes);
   };
 
   return (
     <BrowserRouter>
       <NavBar />
         <Routes>
-          <Route path="/" element={<RecipeList recipes={recipes} remove={removeRecipes}/>}></Route>
+          <Route path="/" element={<RecipeList recipes={recipes} removeRecipes={removeRecipes}/>}></Route>
           <Route path="/add" element={<AddRecipe recipes={recipes}/>}></Route>
         </Routes>
     </BrowserRouter>

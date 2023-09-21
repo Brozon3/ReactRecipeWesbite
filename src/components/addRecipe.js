@@ -60,7 +60,7 @@ export const AddRecipe = ({recipes}) => {
     };
 
     return(
-        <div className="container border border-secondary rounded my-2">
+        <div className="container border border-secondary rounded my-2 w-50">
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Add a Recipe</h1>
