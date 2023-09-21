@@ -1,4 +1,4 @@
-export function RecipeList( {recipes} ){
+export function RecipeList({recipes}){
 
     return (
         recipes.map((recipe, i) => {
