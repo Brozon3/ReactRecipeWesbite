@@ -8,18 +8,23 @@ import data from './recipedata.json'
 
 export function App() {
 
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState(data);
 
   useEffect( () => {
-    setRecipes(data)
-  }, [])
+    console.log(recipes);
+  }, [recipes]);
+
+  const removeRecipes = (recipeName) => {
+    setRecipes(recipes.filter(recipe => recipe.name !== recipeName));
+    console.log(recipes); 
+  };
 
   return (
     <BrowserRouter>
       <NavBar />
         <Routes>
-          <Route path="/" element={<RecipeList recipes={recipes}/>}></Route>
-          <Route path="/add" element={<AddRecipe />}></Route>
+          <Route path="/" element={<RecipeList recipes={recipes} remove={removeRecipes}/>}></Route>
+          <Route path="/add" element={<AddRecipe recipes={recipes}/>}></Route>
         </Routes>
     </BrowserRouter>
   );

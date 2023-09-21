@@ -1,13 +1,13 @@
-export function RecipeList({recipes}){
+export function RecipeList({recipes, remove}){
 
     return (
         recipes.map((recipe, i) => {
-            return <Recipe key={i} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} description={recipe.description}/>
+            return <Recipe key={i} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} description={recipe.description} remove={remove}/>
         })
     )
 };
 
-function Recipe ( {id, name, ingredients, instructions, picture, description} ){
+function Recipe ( {name, ingredients, instructions, picture, description, remove} ){
 
     const ingredientObjects = ingredients.map(
         (ingredient, i) => ({
@@ -22,14 +22,14 @@ function Recipe ( {id, name, ingredients, instructions, picture, description} ){
             text: instruction
         })
     );
-    
 
     return(
-        <div id={id}>
+        
+        <div name={name} className="container border border-secondary rounded my-2">
             <br></br>
             <img src={picture} height={200} width={250} alt=""></img>
-            <p>{name}</p>
-            <p>{description}</p>
+            <h3>{name}</h3>
+            <h5>{description}</h5>
             <p>Ingredients:</p>
             <ul>
                 {ingredientObjects.map(ingredient => (
@@ -39,10 +39,10 @@ function Recipe ( {id, name, ingredients, instructions, picture, description} ){
             <p>Instructions:</p>
             <ul>
                 {instructionObjects.map(instruction => (
-                    <li key={instruction.id}>{instruction.text}</li>
+                    <li key={instruction.id} type="1">{instruction.text}</li>
                 ))}
             </ul>
-            <button onClick={e => e.target.parentNode.style.display="none"}>Remove</button>
+            <button className="mb-3">Remove</button>
             <br></br>
         </div>   
     )
