@@ -121,7 +121,6 @@ export const AddRecipe = ({recipes}) => {
                 </select>
                 <span style={{color: "red"}}>{errors.pic?.message}</span>
                 <br></br>
-                
                 <button className="my-3">Add Recipe</button>
             </form>
             <DevTool control={control}/>
