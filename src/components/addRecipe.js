@@ -41,8 +41,7 @@ export const AddRecipe = ({recipes}) => {
         setIngredidentArr(s => {
             return [
                 ...s, {
-                    type: "text",
-                    value: ""
+                    type: "text"
                 }
             ]
         })
@@ -52,8 +51,7 @@ export const AddRecipe = ({recipes}) => {
         setInstructionArr(s => {
             return [
                 ...s, {
-                    type: "text",
-                    value: ""
+                    type: "text"
                 }
             ]
         })

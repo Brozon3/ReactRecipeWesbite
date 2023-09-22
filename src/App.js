@@ -1,4 +1,3 @@
-import './App.css';
 import { RecipeList } from './components/Recipes';
 import React, { useEffect, useState } from 'react';
 import { NavBar } from './components/NavBar';
