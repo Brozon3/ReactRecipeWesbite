@@ -1,13 +1,16 @@
-export function RecipeList({recipes, removeRecipes}){
+import React from "react";
+import axios from 'axios';
+
+export function RecipeList({recipes}){
 
     return (
         recipes.map((recipe, i) => {
-            return <Recipe key={i} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} description={recipe.description} removeRecipes={removeRecipes}/>
+            return <Recipe key={i} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} description={recipe.description}/>
         })
     )
 };
 
-function Recipe ( {name, ingredients, instructions, picture, description, removeRecipes} ){
+function Recipe ( {name, ingredients, instructions, picture, description} ){
 
     const ingredientObjects = ingredients.map(
         (ingredient, i) => ({
@@ -22,6 +25,10 @@ function Recipe ( {name, ingredients, instructions, picture, description, remove
             text: instruction
         })
     );
+
+    const removeRecipe = async (name) => {
+        await axios.post("/api/removeRecipe", name);
+    }
 
     return(
         
@@ -69,7 +76,7 @@ function Recipe ( {name, ingredients, instructions, picture, description, remove
 
             <div className="row">
                 <div className="col-12">
-                    <button className="mb-3" onClick={() => removeRecipes(name)}>Remove</button>
+                    <button className="mb-3" onClick={() => removeRecipe(name)}>Remove</button>
                 </div>
             </div>
             

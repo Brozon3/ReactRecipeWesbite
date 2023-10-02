@@ -2,12 +2,17 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
+import axios from "axios";
 
-export const AddRecipe = ({recipes}) => {
+export const AddRecipe = () => {
 
     const form = useForm();
     const { register, control, handleSubmit, formState, reset } = form;
     const { errors } = formState;
+
+    const addToDB = async (recipe) => {
+        await axios.post("/api/add", recipe);
+    }
 
     const onSubmit = (data) => {
         let recipe = {
@@ -25,7 +30,7 @@ export const AddRecipe = ({recipes}) => {
                 recipe.instructions.push(value);
             }
         };
-        recipes.push(recipe);
+        addToDB(recipe);
         alert("Recipe added succesfully");
         reset();
     };
@@ -58,24 +63,18 @@ export const AddRecipe = ({recipes}) => {
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Add a Recipe</h1>
-                
-                (// Form component for name)
 
                 <label htmlFor="name">Name: </label>
                 <br></br>
                 <input type="text" id="name" className="mb-3" {...register("name", {required: {value: true, message:"Recipe name is required."}})}></input>
                 <span  style={{color: "red"}}>{errors.name?.message}</span>
                 <br></br>
-                
-                (// Form component for description)
 
                 <label htmlFor="description">Description: </label>
                 <br></br>
                 <input type="text" id="description" className="mb-3" {...register("description", {required: {value: true, message:"Recipe description is required."}})}></input>
                 <span  style={{color: "red"}}>{errors.description?.message}</span>
                 <br></br>
-                
-                (// Form component for ingredients, with ability to add another input field)
 
                 <label htmlFor="ingredient">Ingredients: </label>
                 <br></br>
@@ -92,9 +91,7 @@ export const AddRecipe = ({recipes}) => {
                 <div>
                     <button type="button" className="btn btn-success mt-1 mb-3" onClick={addIngredientInput}>+</button>
                 </div>
-        
-                (// Form component for instructions, with ability to add another input field)
-
+    
                 <label htmlFor="step">Instructions: </label>
                 <br></br>
                 <input type="text" id="step" className="my-1" {...register("step", {required: {value: true, message:"At least one instruction is required."}})}></input>
@@ -110,8 +107,6 @@ export const AddRecipe = ({recipes}) => {
                 <div>
                     <button type="button" className="btn btn-success mt-1 mb-3" onClick={addInstructionInput}>+</button>
                 </div>
-                
-                (// Form component for picture using a select element)
 
                 <label htmlFor="pic"> Picture: </label>
                 <select id="pic" {...register("pic", {required: {value: true, message:"A picture is required."}})}>
@@ -125,8 +120,6 @@ export const AddRecipe = ({recipes}) => {
                 </select>
                 <span style={{color: "red"}}>{errors.pic?.message}</span>
                 <br></br>
-
-                (// Submit button)
                 
                 <button className="my-3">Add Recipe</button>
             </form>

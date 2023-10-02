@@ -3,32 +3,34 @@ import React, { useEffect, useState } from 'react';
 import { NavBar } from './components/NavBar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AddRecipe } from './components/addRecipe';
-import data from './recipedata.json'
+import axios from 'axios';
+
 
 export function App() {
 
-  const [recipes, setRecipes] = useState(data);
+  const [recipes, setRecipes] = useState([]);
 
   useEffect( () => {
-    console.log(recipes);
-  }, [recipes]);
-
-  const removeRecipes = (recipeName) => {
-    let remainingRecipes = [];
-    for (let i = 0; i < recipes.length; i++){
-      if (recipes[i].name !== recipeName){
-        remainingRecipes.push(recipes[i]);
-      }
+    const loadRecipes = async () => {
+      const response = await axios.get("/api/recipes");
+      const newRecipes = response.data;
+      setRecipes(newRecipes);
     }
-    setRecipes(remainingRecipes);
+
+    loadRecipes();
+    
+  }, [recipes.length]);
+
+  const removeRecipes = async (recipeName) => {
+    await axios.put("/api/remove", recipeName);
   };
 
   return (
     <BrowserRouter>
       <NavBar />
         <Routes>
-          <Route path="/" element={<RecipeList recipes={recipes} removeRecipes={removeRecipes}/>}></Route>
-          <Route path="/add" element={<AddRecipe recipes={recipes}/>}></Route>
+          <Route path="/" element={<RecipeList recipes={recipes}/>}></Route>
+          <Route path="/add" element={<AddRecipe/>}></Route>
         </Routes>
     </BrowserRouter>
   );
