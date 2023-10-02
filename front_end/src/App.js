@@ -21,10 +21,6 @@ export function App() {
     
   }, [recipes.length]);
 
-  const removeRecipes = async (recipeName) => {
-    await axios.put("/api/remove", recipeName);
-  };
-
   return (
     <BrowserRouter>
       <NavBar />

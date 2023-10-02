@@ -26,8 +26,12 @@ function Recipe ( {name, ingredients, instructions, picture, description} ){
         })
     );
 
-    const removeRecipe = async (name) => {
-        await axios.post("/api/removeRecipe", name);
+    const removeRecipe = async (recipeName) => {
+        const response = await axios.post("/api/removeRecipe", {
+            name: recipeName
+        });
+        const recipes = response.data;
+        console.log(recipes);
     }
 
     return(

@@ -17,7 +17,10 @@ app.get("/api/recipes", async (req, res) => {
 })
 
 app.post("/api/add", async (req, res) => {
-    const recipe = req.body;
+
+    const recipe = req.body.recipe;
+
+    console.log(recipe);
 
     const client = new MongoClient("mongodb://127.0.0.1:27017")
 
@@ -32,6 +35,8 @@ app.post("/api/add", async (req, res) => {
 
 app.post("/api/removeRecipe", async (req, res) => {
     const recipeName = req.body.name;
+
+    console.log(recipeName);
 
     const client = new MongoClient("mongodb://127.0.0.1:27017");
 

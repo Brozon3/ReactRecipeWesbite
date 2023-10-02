@@ -10,8 +10,17 @@ export const AddRecipe = () => {
     const { register, control, handleSubmit, formState, reset } = form;
     const { errors } = formState;
 
-    const addToDB = async (recipe) => {
-        await axios.post("/api/add", recipe);
+    const addToDB = async (newRecipe) => {
+        try {
+            const response = await axios.post("/api/add", {
+            recipe: newRecipe
+            });
+            const recipes = response.data;
+            console.log(recipes);
+        } catch (error) {
+            console.error(error.response.data);
+        }
+        
     }
 
     const onSubmit = (data) => {
