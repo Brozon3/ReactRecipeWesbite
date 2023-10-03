@@ -25,8 +25,8 @@ export function App() {
     <BrowserRouter>
       <NavBar />
         <Routes>
-          <Route path="/" element={<RecipeList recipes={recipes}/>}></Route>
-          <Route path="/add" element={<AddRecipe/>}></Route>
+          <Route path="/" element={<RecipeList recipes={recipes} updateRecipes={recipes => setRecipes(recipes)}/>}></Route>
+          <Route path="/add" element={<AddRecipe updateRecipes={recipes => setRecipes(recipes)}/>}></Route>
         </Routes>
     </BrowserRouter>
   );

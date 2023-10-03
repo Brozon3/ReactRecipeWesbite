@@ -1,16 +1,16 @@
 import React from "react";
 import axios from 'axios';
 
-export function RecipeList({recipes}){
+export function RecipeList({recipes, updateRecipes}){
 
     return (
         recipes.map((recipe, i) => {
-            return <Recipe key={i} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} description={recipe.description}/>
+            return <Recipe key={i} name={recipe.name} ingredients={recipe.ingredients} instructions={recipe.instructions} picture={recipe.picture} description={recipe.description} updateRecipes={updateRecipes}/>
         })
     )
 };
 
-function Recipe ( {name, ingredients, instructions, picture, description} ){
+function Recipe ( {name, ingredients, instructions, picture, description, updateRecipes} ){
 
     const ingredientObjects = ingredients.map(
         (ingredient, i) => ({
@@ -31,7 +31,7 @@ function Recipe ( {name, ingredients, instructions, picture, description} ){
             name: recipeName
         });
         const recipes = response.data;
-        console.log(recipes);
+        updateRecipes(recipes);
     }
 
     return(
