@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        return cb(null, "./uploads")
+        return cb(null, "./public/uploads")
     },
     filename: function(req, file, cb) {
         return cb(null, Date.now() + file.originalname)
@@ -22,6 +22,7 @@ const upload = multer({storage});
 const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../build")));
+app.use(express.static(path.join(__dirname, "../public/uploads")));
 
 app.get(/^(?!\/api).+/, (req, res) => {
     res.sendFile(path.join(__dirname, '../build/index.html'));
@@ -42,7 +43,9 @@ app.get("/api/recipes", async (req, res) => {
 
 app.post("/api/add", upload.single("picture"), async (req, res) => {
 
-    const filename = req.file.filename;
+    console.log(req.file);
+
+    const file = req.file.filename;
     const name = req.body.name;
     const description = req.body.description;
     const ingredients = req.body.ingredients;
@@ -59,17 +62,16 @@ app.post("/api/add", upload.single("picture"), async (req, res) => {
         "description": description, 
         "ingredients": [ingredients],
         "instructions": [instructions],
-        "picture": filename}
-        );
-        
+        "picture": file
+    });
 
-    res.sendStatus(200);
+    const recipes = await db.collection('recipes').find().toArray();
+        
+    res.json(recipes);
 });
 
 app.post("/api/removeRecipe", async (req, res) => {
     const recipeName = req.body.name;
-
-    console.log(recipeName);
 
     const client = new MongoClient(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@atlascluster.lxepgmh.mongodb.net/`);
 

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Form, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 
-export const RecipeForm = () => {
+export const RecipeForm = ({updateRecipes}) => {
 
     const { register, handleSubmit, control, reset } = useForm();
     const [name, setName] = useState("");
@@ -15,6 +15,8 @@ export const RecipeForm = () => {
     const addToDB = async (formData) => {
         try {
             const response = await axios.post("/api/add", formData);
+            const recipes = response.data;
+            updateRecipes(recipes);
         } catch (error) {
             console.error(error.response.data);
         }
