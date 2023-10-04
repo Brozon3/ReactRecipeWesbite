@@ -1,9 +1,9 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
 import axios from "axios";
-import { FileUploader } from './FileSelect';
+import { Container, Label, Input} from 'react-bootstrap';
 
 export const AddRecipe = ({updateRecipes}) => {
 
@@ -25,22 +25,14 @@ export const AddRecipe = ({updateRecipes}) => {
     }
 
     const onSubmit = (data) => {
-        let recipe = {
-            name: data.name,
-            description: data.description,
-            picture: data.pic,
-            ingredients: [],
-            instructions: []
-        };
+        const formData = new FormData();
+        formData.append("picture", data.file[0]);
+        formData.append("name", data.name);
+        formData.append("description", data.description);
         for (const [key, value] of Object.entries(data)){
-            if (key.includes("ingredient") && value !== ""){
-                recipe.ingredients.push(value);
-            }
-            if (key.includes("step") && value !== ""){
-                recipe.instructions.push(value);
-            }
+            
         };
-        addToDB(recipe);
+        addToDB(formData);
         alert("Recipe added succesfully");
         reset();
     };
@@ -54,28 +46,20 @@ export const AddRecipe = ({updateRecipes}) => {
 
     const addIngredientInput = () => {
         setIngredidentArr(s => {
-            return [
-                ...s, {
-                    type: "text"
-                }
-            ]
+            return [...s, {}]
         })
     };
 
     const addInstructionInput = () => {
         setInstructionArr(s => {
-            return [
-                ...s, {
-                    type: "text"
-                }
-            ]
+            return [...s, {}]
         })
     };
 
     return(
         <div className="container border border-secondary rounded my-2 w-50">
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
                 <h1>Add a Recipe</h1>
 
                 <label htmlFor="name">Name: </label>
@@ -83,8 +67,6 @@ export const AddRecipe = ({updateRecipes}) => {
                 <input 
                     type="text" 
                     id="name" 
-                    value={name} 
-                    onChange={(e) => setName(e.target.value)} 
                     className="mb-3" 
                     {...register
                         ("name", 
@@ -100,8 +82,6 @@ export const AddRecipe = ({updateRecipes}) => {
                 <input 
                     type="text" 
                     id="description"
-                    value={description}
-                    onChange={e => setDescription(e.target.value)} 
                     className="mb-3" 
                     {...register
                         ("description", 
@@ -131,7 +111,7 @@ export const AddRecipe = ({updateRecipes}) => {
                             <input 
                                 id={"ingredient" + i} 
                                 className="my-1" 
-                                type={item.type} 
+                                type="text" 
                                 {...register("ingredient" + i)}></input>
                             <button type="button" className="btn btn-danger mx-1" onClick={e => e.target.parentNode.remove()}>-</button>
                         </div>
@@ -160,7 +140,7 @@ export const AddRecipe = ({updateRecipes}) => {
                             <input 
                                 id={"step" + i} 
                                 className="my-1" 
-                                type={item.type} 
+                                type="text" 
                                 {...register("step" + i)}></input>
                             <button type="button" className="btn btn-danger mx-1" onClick={e => e.target.parentNode.remove()}>-</button>
                         </div>
@@ -170,7 +150,20 @@ export const AddRecipe = ({updateRecipes}) => {
                     <button type="button" className="btn btn-success mt-1 mb-3" onClick={addInstructionInput}>+</button>
                 </div>
 
-                <FileUploader onSelect={file => setFile(file)}/>
+                
+                <label htmlFor="picture">Picture: </label>
+                <br></br>
+                <input 
+                    type="file" 
+                    name="picture"
+                    {...register
+                        ("picture",
+                            {required: {value: true, message:"Recipe picture is required."}}
+                        )
+                    }
+                />
+                <span style={{color: "red"}}>{errors.picture?.message}</span>
+                
                 <br></br>
                 
                 <button className="my-3">Add Recipe</button>

@@ -1,13 +1,23 @@
 import express from 'express';
+import multer from 'multer';
 import { MongoClient } from 'mongodb';
 import path from 'path';
 import { fileURLToPath} from 'url';
 import 'dotenv/config';
 
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        return cb(null, "./uploads")
+    },
+    filename: function(req, file, cb) {
+        return cb(null, Date.now() + file.originalname)
+    }
+});
+
+const upload = multer({storage});
 
 const app = express();
 app.use(express.json());
@@ -18,6 +28,7 @@ app.get(/^(?!\/api).+/, (req, res) => {
 })
 
 app.get("/api/recipes", async (req, res) => {
+
     const client = new MongoClient(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@atlascluster.lxepgmh.mongodb.net/`);
 
     await client.connect();
@@ -29,23 +40,30 @@ app.get("/api/recipes", async (req, res) => {
     res.json(recipes);
 })
 
-app.post("/api/add", async (req, res) => {
+app.post("/api/add", upload.single("picture"), async (req, res) => {
 
-    const recipe = req.body.recipe;
+    const filename = req.file.filename;
+    const name = req.body.name;
+    const description = req.body.description;
+    const ingredients = req.body.ingredients;
+    const instructions = req.body.instructions;
 
-    console.log(recipe);
-
-    const client = new MongoClient(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@atlascluster.lxepgmh.mongodb.net/`)
+    const client = new MongoClient(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@atlascluster.lxepgmh.mongodb.net/`);
 
     await client.connect();
 
     const db = client.db('recipes-db');
 
-    await db.collection('recipes').insertOne(recipe);
+    await db.collection('recipes').insertOne({
+        "name": name, 
+        "description": description, 
+        "ingredients": [ingredients],
+        "instructions": [instructions],
+        "picture": filename}
+        );
+        
 
-    const recipes = await db.collection('recipes').find().toArray();
-
-    res.json(recipes);
+    res.sendStatus(200);
 });
 
 app.post("/api/removeRecipe", async (req, res) => {

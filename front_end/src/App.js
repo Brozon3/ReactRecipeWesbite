@@ -4,6 +4,7 @@ import { NavBar } from './components/NavBar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AddRecipe } from './components/addRecipe';
 import axios from 'axios';
+import { RecipeForm } from './components/recipeForm';
 
 
 export function App() {
@@ -26,7 +27,7 @@ export function App() {
       <NavBar />
         <Routes>
           <Route path="/" element={<RecipeList recipes={recipes} updateRecipes={recipes => setRecipes(recipes)}/>}></Route>
-          <Route path="/add" element={<AddRecipe updateRecipes={recipes => setRecipes(recipes)}/>}></Route>
+          <Route path="/add" element={<RecipeForm/>}></Route>
         </Routes>
     </BrowserRouter>
   );
