@@ -43,8 +43,6 @@ app.get("/api/recipes", async (req, res) => {
 
 app.post("/api/add", upload.single("picture"), async (req, res) => {
 
-    console.log(req.file);
-
     const file = req.file.filename;
     const name = req.body.name;
     const description = req.body.description;
@@ -60,8 +58,8 @@ app.post("/api/add", upload.single("picture"), async (req, res) => {
     await db.collection('recipes').insertOne({
         "name": name, 
         "description": description, 
-        "ingredients": [ingredients],
-        "instructions": [instructions],
+        "ingredients": JSON.parse(ingredients),
+        "instructions": JSON.parse(instructions),
         "picture": file
     });
 

@@ -1,15 +1,15 @@
 import React, { useState }  from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button, Container, InputGroup } from 'react-bootstrap';
 import axios from 'axios';
 
 export const RecipeForm = ({updateRecipes}) => {
 
-    const { register, handleSubmit, control, reset } = useForm();
+    const { register, handleSubmit, reset } = useForm();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [ingredients, setIngredients] = useState([]);
-    const [instructions, setInstructions] = useState([]);
+    const [ingredients, setIngredients] = useState([[]]);
+    const [instructions, setInstructions] = useState([[]]);
     const [file, setFile] = useState([]);
 
     const addToDB = async (formData) => {
@@ -22,17 +22,44 @@ export const RecipeForm = ({updateRecipes}) => {
         }
     }
 
-    const onSubmit = () => {
+    const onSubmit = (data) => {
+        console.log(data);
+        let recipeIngredients = [];
+        let recipeInstructions = [];
+        for (const [key, value] of Object.entries(data)){
+            if (key.includes("ingredient") && value !== ""){
+                recipeIngredients.push(value);
+            }
+            if (key.includes("instruction") && value !== ""){
+                recipeInstructions.push(value);
+            }
+        };
+
         const formData = new FormData();
         formData.append("picture", file);
         formData.append("name", name);
         formData.append("description", description);
-        formData.append("ingredients", ingredients);
-        formData.append("instructions", instructions);
+        formData.append("ingredients", JSON.stringify(recipeIngredients));
+        formData.append("instructions", JSON.stringify(recipeInstructions));
+        
         addToDB(formData);
         alert("Recipe added succesfully");
         reset();
+        setIngredients([]);
+        setInstructions([]);
     }
+
+    const addIngredientInput = () => {
+        setIngredients(s => {
+            return [...s, {}]
+        })
+    };
+
+    const addInstructionInput = () => {
+        setInstructions(s => {
+            return [...s, {}]
+        })
+    };
 
     return (
 
@@ -58,23 +85,39 @@ export const RecipeForm = ({updateRecipes}) => {
                     />
                 </Form.Group>
 
-                <Form.Group>
-                    <Form.Label>Ingredients: </Form.Label>
-                    <Form.Control 
-                        type='text' 
-                        name="ingredients" 
-                        onChange={(e) => setIngredients(e.target.value)} 
-                    />
-                </Form.Group>
+                <p>Ingredients: </p>
+                {ingredients.map((item, i) => {
+                    return(
+                        <InputGroup className='mb-3'>
+                                <Form.Control 
+                                    type='text' 
+                                    name={"ingredient" + i}
+                                    id={"ingredient" + i} 
+                                    {...register("ingredient" + i)} 
+                                />
+                            <Button type="button" className="btn btn-danger mx-1" onClick={e => e.target.parentNode.remove()}>-</Button>
+                        </InputGroup>
+                    )
+                })}
+                <Button type="button" size="sm" className="btn btn-success mx-1" onClick={addIngredientInput}>+</Button>
 
-                <Form.Group>
-                    <Form.Label>Instructions: </Form.Label>
-                    <Form.Control 
-                        type='text' 
-                        name="instructions" 
-                        onChange={(e) => setInstructions(e.target.value)}
-                    />
-                </Form.Group>
+
+                <p>Instructions: </p>
+                {instructions.map((item, i) => {
+                    return(
+                        <InputGroup className='mb-3'>
+                            <Form.Control 
+                                type='text' 
+                                name={"instruction" + i} 
+                                id={"instruction" + i}
+                                {...register("instruction" + i)}
+                            />
+                            
+                            <Button type="button" className="btn btn-danger mx-1" onClick={e => e.target.parentNode.remove()}>-</Button>
+                        </InputGroup>
+                    )
+                })}
+                <Button type="button" size="sm" className="btn btn-success mx-1" onClick={addInstructionInput}>+</Button>
 
                 <Form.Group>
                     <Form.Label>Picture: </Form.Label>

@@ -1,19 +1,23 @@
-import { Link } from "react-router-dom";
-import React from "react";
+import React from 'react';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import { LinkContainer }  from 'react-router-bootstrap';
+
 
 export const NavBar = () => {
-    return(
-        <div className="container w-50">
-            <nav className="navbar navbar-expand-lg navbar-light bg-light container border border-secondary rounded">
-                <div className="collapse navbar-collapse">
-                    <div className="navbar-nav">
-                        <Link to="/" className="nav-item nav-link">Home</Link>
-                        <Link to="/add" className="nav-item nav-link">Add Recipe</Link> 
-                    </div>
-                </div>
-            </nav> 
-        </div>
-        
+    return (
+        <Navbar bg="dark" data-bs-theme="dark">
+            <Container>
+                <Navbar.Brand href="#home">Pat's Recipes</Navbar.Brand>
+                <Nav className="me-auto">
+                    <LinkContainer to="/">
+                        <Nav.Link>Recipes</Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/add">
+                        <Nav.Link>Add A Recipe</Nav.Link>
+                    </LinkContainer>
+                </Nav>
+            </Container>
+        </Navbar>
     )
 }
 
