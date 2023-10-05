@@ -13,7 +13,6 @@
 # production
 /front_end/build
 /server/build
-/server/public
 
 # misc
 .DS_Store
