@@ -129,7 +129,7 @@ export const RecipeForm = ({updateRecipes}) => {
                 </Form.Group>
 
                 <br></br>
-                <Button type="submit">Submit</Button>
+                <Button className="my-2"type="submit">Submit</Button>
             </Form>
         </Container>
         
